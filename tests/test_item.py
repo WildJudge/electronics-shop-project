@@ -35,3 +35,25 @@ def test_all_items_list():
     item2 = Item("Ноутбук", 20000, 5)
     assert item1 in Item.all
     assert item2 in Item.all
+
+
+def test_name_property_and_setter():
+    """Проверяет геттер и сеттер для name."""
+    item = Item("Смартфон", 10000, 20)
+    assert item.name == "Смартфон"
+    item.name = "СуперСмартфон"
+    assert item.name == "СуперСмарт"
+
+
+def test_instantiate_from_csv():
+    """Проверяет метод instantiate_from_csv."""
+    Item.all = []  # Очищаем список перед вызовом
+    Item.instantiate_from_csv('src/items.csv')
+    assert len(Item.all) == 5
+
+
+def test_string_to_number():
+    """Проверяет метод string_to_number."""
+    assert Item.string_to_number('5') == 5
+    assert Item.string_to_number('5.0') == 5
+    assert Item.string_to_number('5.5') == 5.5
