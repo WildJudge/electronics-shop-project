@@ -71,3 +71,11 @@ class Item:
     def string_to_number(value):
         """Преобразует строку в число"""
         return float(value) if '.' in value else int(value)
+
+    def __repr__(self):
+        """Магический метод __repr__ для представления объекта в виде строки"""
+        return f"Item('{self.name}', {self.price}, {self.quantity})"
+
+    def __str__(self):
+        """Магический метод __str__ для представления объекта в виде строки"""
+        return self.name
