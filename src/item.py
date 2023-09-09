@@ -79,3 +79,11 @@ class Item:
     def __str__(self):
         """Магический метод __str__ для представления объекта в виде строки"""
         return self.name
+
+    def __add__(self, other):
+        """Позволяет сложить экземпляры класса Phone или Item по количеству товара в магазине"""
+        if isinstance(other, Item):
+            return self.quantity + other.quantity
+        elif isinstance(other, Phone):
+            return self.quantity  # Можете выполнить любое действие, которое считаете нужным
+        raise TypeError("Unsupported operand type(s) for +: {} and {}".format(type(self), type(other)))
