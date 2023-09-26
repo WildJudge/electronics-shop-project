@@ -1,3 +1,6 @@
+from src.item import Item
+
+
 class KeyboardMixin:
     """Миксин для изменения языка раскладки клавиатуры"""
 
@@ -16,14 +19,11 @@ class KeyboardMixin:
         return self._language
 
 
-class Keyboard(KeyboardMixin):
+class Keyboard(Item, KeyboardMixin):
     """Класс для представления товара 'клавиатура'"""
 
     def __init__(self, name, price, quantity):
-        super().__init__()
-        self.name = name
-        self.price = price
-        self.quantity = quantity
+        super().__init__(name, price, quantity)
 
     def __repr__(self):
         return f"Keyboard('{self.name}', {self.price}, {self.quantity})"
