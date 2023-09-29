@@ -1,6 +1,10 @@
 import csv
 
 
+class InstantiateCSVError(Exception):
+    pass
+
+
 class Item:
     """
     Класс для представления товара в магазине.
@@ -49,25 +53,35 @@ class Item:
         self.price = float(self.price * self.pay_rate)
 
     @classmethod
-    def instantiate_from_csv(cls, filename):
+    def instantiate_from_csv(cls, filename='D:/sky-python/electronics-shop-project/src/items.csv'):
         """Создает экземпляры класса Item из данных в CSV-файле"""
 
         # Очищаем список all перед загрузкой данных из CSV-файла
         cls.all = []
 
-        with open(filename, mode='r', newline='') as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                name = row['name']
-                price = float(row['price'])
-                quantity = int(row['quantity'])
+        try:
+            with open(filename, mode='r', newline='') as file:
+                reader = csv.DictReader(file)
+                for row in reader:
+                    name = row.get('name')
+                    price = row.get('price')
+                    quantity = row.get('quantity')
 
-                existing_item = next((item for item in cls.all if item.name == name), None)
-                if existing_item:
-                    existing_item.price = price
-                    existing_item.quantity = quantity
-                else:
-                    cls(name, price, quantity)
+                    if name is None or price is None or quantity is None:
+                        raise InstantiateCSVError("Файл item.csv поврежден")
+
+                    price = cls.string_to_number(price)
+                    quantity = cls.string_to_number(quantity)
+
+                    existing_item = next((item for item in cls.all if item.name == name), None)
+                    if existing_item:
+                        existing_item.price = price
+                        existing_item.quantity = quantity
+                    else:
+                        cls(name, price, quantity)
+
+        except FileNotFoundError:
+            raise InstantiateCSVError("Отсутствует файл item.csv")
 
     @staticmethod
     def string_to_number(value):
