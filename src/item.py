@@ -1,4 +1,5 @@
 import csv
+import os
 
 
 class InstantiateCSVError(Exception):
@@ -53,8 +54,12 @@ class Item:
         self.price = float(self.price * self.pay_rate)
 
     @classmethod
-    def instantiate_from_csv(cls, filename='D:/sky-python/electronics-shop-project/src/items.csv'):
+    def instantiate_from_csv(cls, filename=None):
         """Создает экземпляры класса Item из данных в CSV-файле"""
+
+        # Получаем путь к файлу items.csv в текущей директории, если путь не указан
+        if filename is None:
+            filename = os.path.join(os.path.dirname(__file__), 'items.csv')
 
         # Очищаем список all перед загрузкой данных из CSV-файла
         cls.all = []
@@ -81,7 +86,7 @@ class Item:
                         cls(name, price, quantity)
 
         except FileNotFoundError:
-            raise InstantiateCSVError("Отсутствует файл item.csv")
+            raise FileNotFoundError("Отсутствует файл item.csv")
 
     @staticmethod
     def string_to_number(value):
